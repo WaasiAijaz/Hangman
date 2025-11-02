@@ -9,18 +9,17 @@ var gameOver = false;
 function newGame(){
     var randomIndex = parseInt(Math.random() * POSSIBLE_WORDS.length);
     word = POSSIBLE_WORDS[randomIndex];
-    guesses = " ";
+    guesses = "";
     guess_count = MAX_GUESSES;
     startStop = true;
     gameOver = false;
     updatePage();
     document.getElementById("guesses").innerHTML = "Guessed Letters: ";
-    document.getElementById("clue"),innerHeight = "_ ".repeat(word.length);
+    document.getElementById("clue").innerHTML = "_ ".repeat(word.length);
 }
 function guessLetter(){
     var input = document.getElementById("guess");
     var letter = input.value;
-    input.value = "";
     if(!startStop || gameOver){
         alert("Start a new game first!");
         return;
@@ -30,15 +29,16 @@ function guessLetter(){
         alert("You already guessed that letter!");
         return;
     }
-
+     
     if(word.indexOf(letter)< 0){
         guess_count--;
     } 
     guesses+=letter;
     updatePage();
+    checkGameStatus();
     input.value = "";
-
 }
+
 function updatePage(){
     var clueString = "";
     for(var i =0;i<word.length;i++){
@@ -58,4 +58,16 @@ function updatePage(){
     var image = document.getElementById("hangmanImage");
     image.src = "images/hangman" + guess_count +".gif";
 
+}
+function checkGameStatus(){
+    var clue = document.getElementById("clue").innerHTML.replace(/\s+/g,'');
+    if(clue === word){
+        document.getElementById("guesses").innerHTML = "You win!";
+        gameOver = true;
+        startStop = false;
+    }else if(guess_count <= 0){
+        document.getElementById("guesses").innerHTML = "You lose!"
+        gameOver = true;
+        startStop = false;
+    }
 }
