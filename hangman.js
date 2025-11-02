@@ -21,8 +21,13 @@ function guessLetter(){
     var input = document.getElementById("guess");
     var letter = input.value;
     input.value = "";
-    if(!startStop){
-        updatePage();
+    if(!startStop || gameOver){
+        alert("Start a new game first!");
+        return;
+    }
+
+    if(guesses.includes(letter)){
+        alert("You already guessed that letter!");
         return;
     }
 
